@@ -1,0 +1,352 @@
+/* ===== Fonts ===== */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ===== Angular Material Theme Override ===== */
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+/* ===== CSS Variables — Comics Color System ===== */
+:root {
+  /* Primary ramp */
+  --c-primary-50: #fff8e1;
+  --c-primary-100: #ffecb3;
+  --c-primary-200: #ffe082;
+  --c-primary-300: #ffd54f;
+  --c-primary-400: #ffca28;
+  --c-primary-500: #ffc107;
+  --c-primary-600: #ffb300;
+  --c-primary-700: #ffa000;
+  --c-primary-800: #ff8f00;
+  --c-primary-900: #ff6f00;
+
+  /* Secondary ramp — cyan/teal */
+  --c-secondary-50: #e0f7fa;
+  --c-secondary-100: #b2ebf2;
+  --c-secondary-200: #80deea;
+  --c-secondary-300: #4dd0e1;
+  --c-secondary-400: #26c6da;
+  --c-secondary-500: #00bcd4;
+  --c-secondary-600: #00acc1;
+  --c-secondary-700: #0097a7;
+  --c-secondary-800: #00838f;
+  --c-secondary-900: #006064;
+
+  /* Accent ramp — hot pink */
+  --c-accent-50: #fce4ec;
+  --c-accent-100: #f8bbd0;
+  --c-accent-200: #f48fb1;
+  --c-accent-300: #f06292;
+  --c-accent-400: #ec407a;
+  --c-accent-500: #e91e63;
+  --c-accent-600: #d81b60;
+  --c-accent-700: #c2185b;
+  --c-accent-800: #ad1457;
+  --c-accent-900: #880e4f;
+
+  /* Success */
+  --c-success-500: #4caf50;
+  --c-success-600: #43a047;
+  --c-success-700: #388e3c;
+
+  /* Warning */
+  --c-warning-500: #ff9800;
+  --c-warning-600: #fb8c00;
+  --c-warning-700: #f57c00;
+
+  /* Error */
+  --c-error-500: #f44336;
+  --c-error-600: #e53935;
+  --c-error-700: #d32f2f;
+
+  /* Neutrals */
+  --n-50: #fafafa;
+  --n-100: #f5f5f5;
+  --n-200: #eeeeee;
+  --n-300: #e0e0e0;
+  --n-400: #bdbdbd;
+  --n-500: #9e9e9e;
+  --n-600: #757575;
+  --n-700: #616161;
+  --n-800: #424242;
+  --n-900: #212121;
+
+  /* Ink — deep navy for outlines */
+  --ink: #1a1a2e;
+  --ink-light: #2d2d44;
+
+  /* Fonts */
+  --font-display: 'Bangers', cursive;
+  --font-body: 'Fredoka', sans-serif;
+  --font-mono: 'Space Grotesk', sans-serif;
+
+  /* Spacing — 8px system */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 40px;
+  --sp-6: 48px;
+  --sp-7: 56px;
+  --sp-8: 64px;
+  --sp-9: 72px;
+  --sp-10: 80px;
+
+  /* Shadows — comics style */
+  --shadow-comic: 6px 6px 0 var(--ink);
+  --shadow-comic-sm: 3px 3px 0 var(--ink);
+  --shadow-comic-lg: 10px 10px 0 var(--ink);
+  --shadow-comic-xl: 14px 14px 0 var(--ink);
+
+  /* Transitions */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--n-50);
+  color: var(--ink);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* ===== Utility Classes ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--sp-2);
+}
+
+.section-pad {
+  padding: var(--sp-10) 0;
+}
+
+.display-font {
+  font-family: var(--font-display);
+  letter-spacing: 2px;
+}
+
+/* ===== Comics Border ===== */
+.comics-border {
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow-comic);
+}
+
+.comics-border-thick {
+  border: 4px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: var(--shadow-comic-lg);
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--n-200);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-primary-500);
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-accent-500);
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: var(--c-primary-400);
+  color: var(--ink);
+}
+
+/* ===== Keyframe Animations ===== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  70% { transform: scale(1.1) rotate(3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes dash {
+  from { background-position: 0 0; }
+  to { background-position: 40px 0; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+/* ===== Animation Utility Classes ===== */
+.anim-float { animation: float 4s ease-in-out infinite; }
+.anim-float-slow { animation: floatSlow 6s ease-in-out infinite; }
+.anim-spin-slow { animation: spinSlow 20s linear infinite; }
+.anim-pulse { animation: pulseScale 2s ease-in-out infinite; }
+.anim-wobble { animation: wobble 0.5s ease-in-out; }
+
+/* ===== Reveal on scroll ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s var(--ease-bounce), transform 0.6s var(--ease-bounce);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.6s var(--ease-bounce), transform 0.6s var(--ease-bounce);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.6s var(--ease-bounce), transform 0.6s var(--ease-bounce);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-pop {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.5s var(--ease-bounce), transform 0.5s var(--ease-bounce);
+}
+
+.reveal-pop.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered children */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s var(--ease-bounce), transform 0.5s var(--ease-bounce);
+}
+
+.stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(2) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(3) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(4) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(5) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(6) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(8) { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(9) { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(10) { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(11) { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
+.stagger.visible > *:nth-child(12) { transition-delay: 0.6s; opacity: 1; transform: translateY(0); }
+
+/* ===== Halftone background pattern ===== */
+.halftone {
+  background-image: radial-gradient(circle, var(--ink) 1px, transparent 1.5px);
+  background-size: 12px 12px;
+}
+
+.halftone-light {
+  background-image: radial-gradient(circle, var(--n-400) 1px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
+/* ===== Burst / Star burst ===== */
+.starburst {
+  clip-path: polygon(
+    50% 0%, 61% 18%, 83% 12%, 76% 35%, 100% 38%,
+    82% 55%, 95% 78%, 70% 74%, 60% 100%, 50% 82%,
+    40% 100%, 30% 74%, 5% 78%, 18% 55%, 0% 38%,
+    24% 35%, 17% 12%, 39% 18%
+  );
+}
+
+/* ===== Material overrides ===== */
+.mat-mdc-snack-bar-container {
+  border-radius: 12px !important;
+  border: 3px solid var(--ink) !important;
+  box-shadow: var(--shadow-comic) !important;
+}
+
+.mat-mdc-dialog-container {
+  border-radius: 20px !important;
+  border: 4px solid var(--ink) !important;
+  box-shadow: var(--shadow-comic-lg) !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  :root {
+    --shadow-comic: 4px 4px 0 var(--ink);
+    --shadow-comic-lg: 6px 6px 0 var(--ink);
+  }
+}
