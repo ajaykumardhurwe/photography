@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RevealDirective } from '../reveal.directive';
+
+interface Skill {
+  name: string;
+  pct: number;
+  color: string;
+}
 
 @Component({
   selector: 'app-about',
@@ -14,6 +20,7 @@ import { RevealDirective } from '../reveal.directive';
             <div class="photo-frame comics-border-thick">
               <img src="https://images.pexels.com/photos/16922040/pexels-photo-16922040.jpeg?auto=compress&cs=tinysrgb&h=650&w=500"
                    alt="Photographer with camera" />
+              <div class="photo-shine"></div>
             </div>
             <div class="floating-badge badge-1 comics-border anim-float">
               <span class="badge-icon">🏆</span>
@@ -27,6 +34,13 @@ import { RevealDirective } from '../reveal.directive';
               <div class="badge-text">
                 <span class="badge-num display-font">24h</span>
                 <span class="badge-label">Fast Delivery</span>
+              </div>
+            </div>
+            <div class="floating-badge badge-3 comics-border anim-float">
+              <span class="badge-icon">😊</span>
+              <div class="badge-text">
+                <span class="badge-num display-font">500+</span>
+                <span class="badge-label">Happy Clients</span>
               </div>
             </div>
           </div>
@@ -48,40 +62,17 @@ import { RevealDirective } from '../reveal.directive';
             </p>
 
             <div class="skills stagger" appReveal>
-              <div class="skill-bar">
+              <div *ngFor="let skill of skills" class="skill-bar">
                 <div class="skill-header">
-                  <span>Portrait Photography</span>
-                  <span class="skill-pct">95%</span>
+                  <span>{{ skill.name }}</span>
+                  <span class="skill-pct">{{ skill.pct }}%</span>
                 </div>
                 <div class="skill-track">
-                  <div class="skill-fill" style="width: 95%; background: var(--c-accent-500);"></div>
-                </div>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-header">
-                  <span>Wedding Photography</span>
-                  <span class="skill-pct">90%</span>
-                </div>
-                <div class="skill-track">
-                  <div class="skill-fill" style="width: 90%; background: var(--c-primary-500);"></div>
-                </div>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-header">
-                  <span>Cinematic Videography</span>
-                  <span class="skill-pct">85%</span>
-                </div>
-                <div class="skill-track">
-                  <div class="skill-fill" style="width: 85%; background: var(--c-secondary-500);"></div>
-                </div>
-              </div>
-              <div class="skill-bar">
-                <div class="skill-header">
-                  <span>Photo Editing & Retouch</span>
-                  <span class="skill-pct">92%</span>
-                </div>
-                <div class="skill-track">
-                  <div class="skill-fill" style="width: 92%; background: var(--c-success-500);"></div>
+                  <div
+                    class="skill-fill"
+                    [style.width]="skillsAnimated() ? skill.pct + '%' : '0%'"
+                    [style.background]="skill.color"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -123,6 +114,7 @@ import { RevealDirective } from '../reveal.directive';
       overflow: hidden;
       transform: rotate(-3deg);
       transition: transform 0.4s var(--ease-bounce);
+      position: relative;
     }
 
     .photo-frame:hover {
@@ -135,6 +127,22 @@ import { RevealDirective } from '../reveal.directive';
       object-fit: cover;
     }
 
+    .photo-shine {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+      );
+      animation: shimmer 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
     .floating-badge {
       position: absolute;
       display: flex;
@@ -143,6 +151,12 @@ import { RevealDirective } from '../reveal.directive';
       padding: 12px 16px;
       background: var(--n-50);
       z-index: 2;
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .floating-badge:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      box-shadow: 6px 6px 0 var(--ink);
     }
 
     .badge-1 {
@@ -155,6 +169,12 @@ import { RevealDirective } from '../reveal.directive';
       bottom: 30px;
       left: -20px;
       transform: rotate(-4deg);
+    }
+
+    .badge-3 {
+      top: 45%;
+      right: -15px;
+      transform: rotate(3deg);
     }
 
     .badge-icon {
@@ -188,6 +208,11 @@ import { RevealDirective } from '../reveal.directive';
       letter-spacing: 2px;
       box-shadow: 2px 2px 0 var(--ink);
       margin-bottom: var(--sp-2);
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .section-tag:hover {
+      transform: scale(1.05) rotate(-2deg);
     }
 
     .about-title {
@@ -243,7 +268,7 @@ import { RevealDirective } from '../reveal.directive';
       height: 100%;
       border-right: 2px solid var(--ink);
       border-radius: 0 8px 8px 0;
-      transition: width 1s var(--ease-bounce);
+      transition: width 1.2s var(--ease-bounce);
       position: relative;
     }
 
@@ -278,6 +303,21 @@ import { RevealDirective } from '../reveal.directive';
       border-radius: 14px;
       box-shadow: 5px 5px 0 var(--ink);
       transition: all 0.3s var(--ease-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .btn-primary:hover::before {
+      transform: translateX(100%);
     }
 
     .btn-primary:hover {
@@ -301,14 +341,23 @@ import { RevealDirective } from '../reveal.directive';
         height: 400px;
       }
 
-      .badge-1 {
-        right: 10px;
-      }
-
-      .badge-2 {
-        left: 10px;
-      }
+      .badge-1 { right: 10px; }
+      .badge-2 { left: 10px; }
+      .badge-3 { right: 10px; }
     }
   `],
 })
-export class AboutComponent {}
+export class AboutComponent implements AfterViewInit {
+  skillsAnimated = signal(false);
+
+  skills: Skill[] = [
+    { name: 'Portrait Photography', pct: 95, color: 'var(--c-accent-500)' },
+    { name: 'Wedding Photography', pct: 90, color: 'var(--c-primary-500)' },
+    { name: 'Cinematic Videography', pct: 85, color: 'var(--c-secondary-500)' },
+    { name: 'Photo Editing & Retouch', pct: 92, color: 'var(--c-success-500)' },
+  ];
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.skillsAnimated.set(true), 400);
+  }
+}

@@ -69,16 +69,20 @@ import { FooterComponent } from './app/footer/footer.component';
       transform: scale(0) rotate(-180deg);
       pointer-events: none;
       transition: all 0.4s var(--ease-bounce);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .back-to-top.visible {
       opacity: 1;
       transform: scale(1) rotate(0deg);
       pointer-events: auto;
+      animation: pulseGlow 2.5s ease-in-out infinite;
     }
 
     .back-to-top:hover {
-      transform: scale(1.1) rotate(0deg);
+      transform: scale(1.15) rotate(0deg);
       box-shadow: 6px 6px 0 var(--ink);
       background: var(--c-accent-600);
     }

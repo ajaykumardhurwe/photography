@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RevealDirective } from '../reveal.directive';
 
@@ -8,19 +8,21 @@ import { RevealDirective } from '../reveal.directive';
   imports: [CommonModule, RevealDirective],
   template: `
     <section id="hero" class="hero">
-      <!-- Floating decorative shapes -->
+      <!-- Animated gradient background -->
       <div class="hero-bg">
+        <div class="gradient-layer"></div>
         <div class="shape shape-1 anim-float"></div>
         <div class="shape shape-2 anim-float-slow"></div>
         <div class="shape shape-3 anim-spin-slow"></div>
         <div class="shape shape-4 anim-float"></div>
         <div class="shape shape-5 anim-float-slow"></div>
+        <div class="shape shape-6 anim-pulse"></div>
         <div class="halftone-overlay"></div>
       </div>
 
       <div class="container hero-content">
         <div class="hero-text">
-          <div class="badge anim-pulse" appReveal="reveal-pop">
+          <div class="badge anim-pulse-glow" appReveal="reveal-pop">
             <span class="badge-dot"></span>
             Now booking 2026 sessions!
           </div>
@@ -71,6 +73,7 @@ import { RevealDirective } from '../reveal.directive';
               <img src="https://images.pexels.com/photos/16029834/pexels-photo-16029834.jpeg?auto=compress&cs=tinysrgb&h=650&w=500"
                    alt="Photographer in studio" />
               <div class="photo-tag">PRO STUDIO</div>
+              <div class="photo-shine"></div>
             </div>
             <div class="photo-card photo-float-1 comics-border anim-float">
               <img src="https://images.pexels.com/photos/23991042/pexels-photo-23991042.jpeg?auto=compress&cs=tinysrgb&h=350&w=280"
@@ -83,13 +86,16 @@ import { RevealDirective } from '../reveal.directive';
             <div class="starburst-badge anim-pulse">
               <span class="starburst-text display-font">NEW!</span>
             </div>
+            <div class="ring-badge anim-pulse-glow">
+              <span class="ring-text">🏆</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="scroll-indicator">
         <span class="scroll-text">Scroll to explore</span>
-        <div class="scroll-arrow anim-float">
+        <div class="scroll-arrow">
           <span>↓</span>
         </div>
       </div>
@@ -103,7 +109,6 @@ import { RevealDirective } from '../reveal.directive';
       align-items: center;
       overflow: hidden;
       padding-top: 80px;
-      background: linear-gradient(135deg, var(--c-primary-100) 0%, var(--c-secondary-100) 50%, var(--c-accent-100) 100%);
     }
 
     .hero-bg {
@@ -111,6 +116,20 @@ import { RevealDirective } from '../reveal.directive';
       inset: 0;
       overflow: hidden;
       pointer-events: none;
+    }
+
+    .gradient-layer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        var(--c-primary-100) 0%,
+        var(--c-secondary-100) 35%,
+        var(--c-accent-100) 70%,
+        var(--c-primary-100) 100%
+      );
+      background-size: 300% 300%;
+      animation: gradientShift 15s ease infinite;
     }
 
     .shape {
@@ -151,6 +170,13 @@ import { RevealDirective } from '../reveal.directive';
       bottom: 25%; left: 20%;
       clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
       border: none;
+    }
+    .shape-6 {
+      width: 40px; height: 40px;
+      background: var(--c-accent-300);
+      top: 45%; right: 25%;
+      border-radius: 50%;
+      opacity: 0.6;
     }
 
     .halftone-overlay {
@@ -203,7 +229,12 @@ import { RevealDirective } from '../reveal.directive';
       display: block;
       color: var(--ink);
       -webkit-text-stroke: 2px var(--ink);
+      animation: slideInLeft 0.6s var(--ease-bounce) backwards;
     }
+
+    .title-line:nth-child(1) { animation-delay: 0.2s; }
+    .title-line:nth-child(2) { animation-delay: 0.4s; }
+    .title-line:nth-child(3) { animation-delay: 0.6s; }
 
     .title-accent {
       color: var(--c-accent-500);
@@ -222,6 +253,7 @@ import { RevealDirective } from '../reveal.directive';
       background: var(--c-primary-400);
       z-index: -1;
       transform: skewX(-10deg);
+      animation: slideInLeft 0.4s var(--ease-bounce) 0.5s backwards;
     }
 
     .hero-subtitle {
@@ -253,6 +285,21 @@ import { RevealDirective } from '../reveal.directive';
       border-radius: 14px;
       box-shadow: 5px 5px 0 var(--ink);
       transition: all 0.3s var(--ease-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .btn-primary:hover::before {
+      transform: translateX(100%);
     }
 
     .btn-primary:hover {
@@ -305,6 +352,11 @@ import { RevealDirective } from '../reveal.directive';
     .stat {
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .stat:hover {
+      transform: translateY(-4px) scale(1.05);
     }
 
     .stat-num {
@@ -370,6 +422,21 @@ import { RevealDirective } from '../reveal.directive';
       transform: translateX(-50%) rotate(0deg) scale(1.03);
     }
 
+    .photo-shine {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.3),
+        transparent
+      );
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
     .photo-tag {
       position: absolute;
       bottom: 12px;
@@ -382,6 +449,7 @@ import { RevealDirective } from '../reveal.directive';
       font-size: 12px;
       letter-spacing: 1px;
       box-shadow: 2px 2px 0 var(--ink);
+      z-index: 2;
     }
 
     .photo-float-1 {
@@ -428,6 +496,27 @@ import { RevealDirective } from '../reveal.directive';
       letter-spacing: 1px;
     }
 
+    .ring-badge {
+      position: absolute;
+      bottom: -10px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background: var(--c-primary-400);
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .ring-text {
+      font-size: 24px;
+      animation: ring 3s ease-in-out infinite;
+    }
+
     /* Scroll indicator */
     .scroll-indicator {
       position: absolute;
@@ -438,6 +527,7 @@ import { RevealDirective } from '../reveal.directive';
       flex-direction: column;
       align-items: center;
       gap: 8px;
+      z-index: 3;
     }
 
     .scroll-text {
@@ -460,6 +550,7 @@ import { RevealDirective } from '../reveal.directive';
       justify-content: center;
       font-size: 18px;
       box-shadow: 2px 2px 0 var(--ink);
+      animation: scrollBounce 1.5s ease-in-out infinite;
     }
 
     @media (max-width: 900px) {
@@ -469,70 +560,33 @@ import { RevealDirective } from '../reveal.directive';
         gap: var(--sp-4);
       }
 
-      .hero-text {
-        order: 1;
-      }
-
-      .hero-visual {
-        order: 2;
-      }
+      .hero-text { order: 1; }
+      .hero-visual { order: 2; }
 
       .photo-stack {
         height: 360px;
         max-width: 320px;
       }
 
-      .photo-main {
-        width: 240px;
-        height: 320px;
-      }
+      .photo-main { width: 240px; height: 320px; }
+      .photo-float-1 { width: 120px; height: 150px; }
+      .photo-float-2 { width: 110px; height: 140px; }
 
-      .photo-float-1 {
-        width: 120px;
-        height: 150px;
-      }
-
-      .photo-float-2 {
-        width: 110px;
-        height: 140px;
-      }
-
-      .hero-actions {
-        justify-content: center;
-      }
-
-      .hero-stats {
-        justify-content: center;
-      }
-
-      .hero-subtitle {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .scroll-indicator {
-        display: none;
-      }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-subtitle { margin-left: auto; margin-right: auto; }
+      .scroll-indicator { display: none; }
     }
 
     @media (max-width: 500px) {
-      .hero-stats {
-        gap: var(--sp-2);
-      }
-      .stat-num {
-        font-size: 28px;
-      }
+      .hero-stats { gap: var(--sp-2); }
+      .stat-num { font-size: 28px; }
       .photo-stack {
         height: 280px;
         max-width: 260px;
       }
-      .photo-main {
-        width: 200px;
-        height: 270px;
-      }
-      .photo-float-1, .photo-float-2 {
-        display: none;
-      }
+      .photo-main { width: 200px; height: 270px; }
+      .photo-float-1, .photo-float-2 { display: none; }
     }
   `],
 })

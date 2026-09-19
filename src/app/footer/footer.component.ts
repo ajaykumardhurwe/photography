@@ -29,9 +29,9 @@ import { CommonModule } from '@angular/common';
           <div class="footer-col">
             <h4 class="footer-heading">Services</h4>
             <ul class="footer-links">
-              <li><a href="#services">Basic — Starter Snap</a></li>
-              <li><a href="#services">Intermediate — Pro Shoot</a></li>
-              <li><a href="#services">Advanced — Cinematic Master</a></li>
+              <li><a href="#services">🟢 Basic — Level 1</a></li>
+              <li><a href="#services">🔵 Standard — Level 2 ⭐</a></li>
+              <li><a href="#services">🟣 Premium — Level 3</a></li>
               <li><a href="#contact">Custom Quote</a></li>
             </ul>
           </div>
@@ -65,7 +65,7 @@ import { CommonModule } from '@angular/common';
 
       <!-- Decorative wave -->
       <div class="footer-wave">
-        <div class="wave-shape" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]"></div>
+        <div class="wave-shape" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"></div>
       </div>
     </footer>
   `,
@@ -91,10 +91,16 @@ import { CommonModule } from '@angular/common';
       gap: 8px;
       text-decoration: none;
       margin-bottom: var(--sp-2);
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .logo:hover {
+      transform: scale(1.05) rotate(-2deg);
     }
 
     .logo-icon {
       font-size: 28px;
+      animation: wobble 2s ease-in-out infinite;
     }
 
     .logo-text {
@@ -138,6 +144,7 @@ import { CommonModule } from '@angular/common';
       background: var(--c-accent-500);
       border-color: var(--c-accent-400);
       transform: translate(-2px, -2px) rotate(-5deg);
+      box-shadow: 3px 3px 0 var(--n-900);
     }
 
     .footer-heading {
@@ -166,7 +173,7 @@ import { CommonModule } from '@angular/common';
 
     .footer-links a:hover {
       color: var(--c-accent-400);
-      transform: translateX(4px);
+      transform: translateX(6px);
     }
 
     .footer-bottom {

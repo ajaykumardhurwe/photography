@@ -23,9 +23,12 @@ import { TESTIMONIALS } from '../data';
           <div
             *ngFor="let t of testimonials; let i = index"
             class="testimonial-card comics-border"
-            [style.--card-rotate]="(i % 2 === 0 ? -1 : 1) + 'deg'"
+            [style.--card-rotate]="(i % 2 === 0 ? -1.5 : 1.5) + 'deg'"
           >
             <div class="quote-mark display-font">"</div>
+            <div class="stars-row">
+              <span *ngFor="let s of [1,2,3,4,5]" class="star">★</span>
+            </div>
             <p class="testimonial-text">{{ t.text }}</p>
             <div class="testimonial-author">
               <div class="author-avatar" [style.background]="t.color">
@@ -35,11 +38,16 @@ import { TESTIMONIALS } from '../data';
                 <span class="author-name">{{ t.name }}</span>
                 <span class="author-role">{{ t.role }}</span>
               </div>
-              <div class="stars">
-                <span *ngFor="let s of [1,2,3,4,5]" class="star">★</span>
-              </div>
             </div>
           </div>
+        </div>
+
+        <div class="rating-summary" appReveal="reveal-pop">
+          <div class="rating-big display-font">4.9</div>
+          <div class="rating-stars">
+            <span *ngFor="let s of [1,2,3,4,5]" class="star-big">★</span>
+          </div>
+          <p class="rating-text">Based on 200+ reviews</p>
         </div>
       </div>
     </section>
@@ -65,6 +73,11 @@ import { TESTIMONIALS } from '../data';
       letter-spacing: 2px;
       box-shadow: 2px 2px 0 var(--ink);
       margin-bottom: var(--sp-2);
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .section-tag:hover {
+      transform: scale(1.05) rotate(-2deg);
     }
 
     .section-title {
@@ -95,8 +108,9 @@ import { TESTIMONIALS } from '../data';
     }
 
     .testimonial-card:hover {
-      transform: rotate(0deg) translate(-3px, -3px) scale(1.02);
-      box-shadow: 8px 8px 0 var(--ink);
+      transform: rotate(0deg) translate(-4px, -4px) scale(1.03);
+      box-shadow: 10px 10px 0 var(--ink);
+      z-index: 5;
     }
 
     .quote-mark {
@@ -108,7 +122,37 @@ import { TESTIMONIALS } from '../data';
       line-height: 1;
       -webkit-text-stroke: 2px var(--ink);
       z-index: 0;
+      transition: transform 0.3s var(--ease-bounce);
     }
+
+    .testimonial-card:hover .quote-mark {
+      transform: scale(1.15) rotate(-10deg);
+    }
+
+    .stars-row {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .star {
+      color: var(--c-primary-500);
+      font-size: 18px;
+      -webkit-text-stroke: 1px var(--ink);
+      transition: transform 0.2s ease;
+    }
+
+    .testimonial-card:hover .star {
+      transform: scale(1.15);
+    }
+
+    .testimonial-card:hover .star:nth-child(1) { transition-delay: 0.05s; }
+    .testimonial-card:hover .star:nth-child(2) { transition-delay: 0.1s; }
+    .testimonial-card:hover .star:nth-child(3) { transition-delay: 0.15s; }
+    .testimonial-card:hover .star:nth-child(4) { transition-delay: 0.2s; }
+    .testimonial-card:hover .star:nth-child(5) { transition-delay: 0.25s; }
 
     .testimonial-text {
       position: relative;
@@ -141,6 +185,11 @@ import { TESTIMONIALS } from '../data';
       font-size: 16px;
       box-shadow: 2px 2px 0 var(--ink);
       flex-shrink: 0;
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .testimonial-card:hover .author-avatar {
+      transform: rotate(10deg) scale(1.1);
     }
 
     .author-info {
@@ -160,15 +209,46 @@ import { TESTIMONIALS } from '../data';
       color: var(--ink-light);
     }
 
-    .stars {
+    /* Rating summary */
+    .rating-summary {
+      text-align: center;
+      margin-top: var(--sp-5);
+      padding: var(--sp-3);
       display: flex;
-      gap: 2px;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
 
-    .star {
+    .rating-big {
+      font-size: 56px;
+      color: var(--c-accent-600);
+      line-height: 1;
+      -webkit-text-stroke: 2px var(--ink);
+    }
+
+    .rating-stars {
+      display: flex;
+      gap: 4px;
+    }
+
+    .star-big {
       color: var(--c-primary-500);
-      font-size: 16px;
+      font-size: 24px;
       -webkit-text-stroke: 1px var(--ink);
+      animation: pulseScale 2s ease-in-out infinite;
+    }
+
+    .star-big:nth-child(1) { animation-delay: 0s; }
+    .star-big:nth-child(2) { animation-delay: 0.2s; }
+    .star-big:nth-child(3) { animation-delay: 0.4s; }
+    .star-big:nth-child(4) { animation-delay: 0.6s; }
+    .star-big:nth-child(5) { animation-delay: 0.8s; }
+
+    .rating-text {
+      font-size: 14px;
+      color: var(--ink-light);
+      font-weight: 500;
     }
 
     @media (max-width: 900px) {

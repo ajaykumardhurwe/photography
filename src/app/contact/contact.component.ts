@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RevealDirective } from '../reveal.directive';
-import { SERVICES } from '../data';
+import { SERVICE_LEVELS, PRICING_ROWS } from '../data';
 
 @Component({
   selector: 'app-contact',
@@ -10,6 +10,11 @@ import { SERVICES } from '../data';
   imports: [CommonModule, FormsModule, RevealDirective],
   template: `
     <section id="contact" class="contact-section section-pad">
+      <div class="contact-bg-shapes">
+        <div class="bg-shape bg-shape-1 anim-float"></div>
+        <div class="bg-shape bg-shape-2 anim-float-slow"></div>
+      </div>
+
       <div class="container">
         <div class="contact-grid">
           <div class="contact-info" appReveal="reveal-left">
@@ -96,9 +101,9 @@ import { SERVICES } from '../data';
               <div class="form-group">
                 <label for="service">Service Level</label>
                 <select id="service" name="service" [(ngModel)]="formData.service" required class="form-input form-select">
-                  <option value="">Select a package...</option>
-                  <option *ngFor="let s of services" [value]="s.level">
-                    {{ s.level }} — {{ s.name }} ({{ s.price }})
+                  <option value="">Select a level...</option>
+                  <option *ngFor="let lvl of serviceLevels" [value]="lvl.label">
+                    {{ lvl.dotColor }} Level {{ lvl.level }} — {{ lvl.label }}
                   </option>
                 </select>
               </div>
@@ -132,7 +137,10 @@ import { SERVICES } from '../data';
                 [disabled]="!form.valid"
               >
                 <span *ngIf="!submitting()">Send Booking Request 🚀</span>
-                <span *ngIf="submitting()">Sending...</span>
+                <span *ngIf="submitting()" class="loading-text">
+                  <span class="spinner"></span>
+                  Sending...
+                </span>
               </button>
 
               <div class="form-success" *ngIf="submitted()">
@@ -152,11 +160,43 @@ import { SERVICES } from '../data';
       overflow: hidden;
     }
 
+    .contact-bg-shapes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-shape {
+      position: absolute;
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+
+    .bg-shape-1 {
+      width: 120px;
+      height: 120px;
+      background: var(--c-accent-300);
+      top: 10%;
+      right: 5%;
+    }
+
+    .bg-shape-2 {
+      width: 80px;
+      height: 80px;
+      background: var(--c-secondary-300);
+      bottom: 15%;
+      left: 5%;
+    }
+
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1.3fr;
       gap: var(--sp-5);
       align-items: start;
+      position: relative;
+      z-index: 1;
     }
 
     .section-tag {
@@ -169,6 +209,11 @@ import { SERVICES } from '../data';
       letter-spacing: 2px;
       box-shadow: 2px 2px 0 var(--ink);
       margin-bottom: var(--sp-2);
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .section-tag:hover {
+      transform: scale(1.05) rotate(-2deg);
     }
 
     .contact-title {
@@ -205,8 +250,8 @@ import { SERVICES } from '../data';
     }
 
     .contact-method:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 var(--ink);
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0 var(--ink);
     }
 
     .method-icon {
@@ -220,6 +265,11 @@ import { SERVICES } from '../data';
       font-size: 20px;
       box-shadow: 2px 2px 0 var(--ink);
       flex-shrink: 0;
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .contact-method:hover .method-icon {
+      transform: rotate(10deg) scale(1.1);
     }
 
     .method-info {
@@ -311,6 +361,7 @@ import { SERVICES } from '../data';
       border-color: var(--c-accent-500);
       box-shadow: 3px 3px 0 var(--ink);
       transform: translate(-1px, -1px);
+      background: var(--n-50);
     }
 
     .form-input::placeholder {
@@ -343,6 +394,21 @@ import { SERVICES } from '../data';
       cursor: pointer;
       transition: all 0.3s var(--ease-bounce);
       font-family: var(--font-body);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .submit-btn:hover:not(:disabled)::before {
+      transform: translateX(100%);
     }
 
     .submit-btn:hover:not(:disabled) {
@@ -361,6 +427,22 @@ import { SERVICES } from '../data';
       cursor: not-allowed;
     }
 
+    .loading-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spinSlow 0.8s linear infinite;
+      display: inline-block;
+    }
+
     .form-success {
       display: flex;
       align-items: center;
@@ -372,7 +454,7 @@ import { SERVICES } from '../data';
       box-shadow: 3px 3px 0 var(--ink);
       color: white;
       font-weight: 600;
-      animation: popIn 0.4s var(--ease-bounce);
+      animation: bounceIn 0.5s var(--ease-bounce);
     }
 
     .success-icon {
@@ -403,7 +485,8 @@ import { SERVICES } from '../data';
   `],
 })
 export class ContactComponent {
-  services = SERVICES;
+  serviceLevels = SERVICE_LEVELS;
+  pricingRows = PRICING_ROWS;
   submitting = signal(false);
   submitted = signal(false);
 

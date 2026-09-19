@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
+    <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
+
     <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
       <div class="nav-container">
         <a href="#hero" class="logo" (click)="closeMenu()">
@@ -37,6 +39,17 @@ import { CommonModule } from '@angular/common';
     </nav>
   `,
   styles: [`
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--c-accent-500), var(--c-primary-500), var(--c-secondary-500));
+      z-index: 2000;
+      transition: width 0.1s ease;
+      border-bottom: 2px solid var(--ink);
+    }
+
     .navbar {
       position: fixed;
       top: 0;
@@ -139,6 +152,11 @@ import { CommonModule } from '@angular/common';
 
     .link-icon {
       font-size: 18px;
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .nav-link:hover .link-icon {
+      transform: scale(1.2) rotate(10deg);
     }
 
     .nav-cta {
@@ -153,6 +171,21 @@ import { CommonModule } from '@angular/common';
       border-radius: 12px;
       box-shadow: 4px 4px 0 var(--ink);
       transition: all 0.3s var(--ease-bounce);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .nav-cta:hover::before {
+      transform: translateX(100%);
     }
 
     .nav-cta:hover {
@@ -251,6 +284,7 @@ import { CommonModule } from '@angular/common';
 export class NavbarComponent {
   scrolled = signal(false);
   menuOpen = signal(false);
+  scrollProgress = signal(0);
 
   links = [
     { label: 'Home', url: '#hero', icon: '🏠' },
@@ -262,7 +296,10 @@ export class NavbarComponent {
 
   @HostListener('window:scroll')
   onScroll(): void {
-    this.scrolled.set(window.scrollY > 60);
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    this.scrolled.set(scrollTop > 60);
+    this.scrollProgress.set(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
   }
 
   toggleMenu(): void {
