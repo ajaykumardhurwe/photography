@@ -104,7 +104,7 @@ import { RevealDirective } from '../reveal.directive';
   styles: [`
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 50vh;
       display: flex;
       align-items: center;
       overflow: hidden;
