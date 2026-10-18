@@ -8,34 +8,30 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="scroll-progress" [style.width.%]="scrollProgress()"></div>
 
-    <nav class="navbar" [class.scrolled]="scrolled()" [class.menu-open]="menuOpen()">
+    <!-- Top bar: logo + Book Now only -->
+    <nav class="navbar" [class.scrolled]="scrolled()">
       <div class="nav-container">
-        <a href="#hero" class="logo" (click)="closeMenu()">
+        <a href="#hero" class="logo">
           <span class="logo-icon">📸</span>
           <span class="logo-text display-font">SNAP<span class="logo-accent">STAR</span></span>
         </a>
-
-        <button class="hamburger" (click)="toggleMenu()" aria-label="Toggle menu">
-          <span [class.open]="menuOpen()"></span>
-          <span [class.open]="menuOpen()"></span>
-          <span [class.open]="menuOpen()"></span>
-        </button>
-
-        <ul class="nav-links" [class.open]="menuOpen()">
-          <li *ngFor="let link of links; let i = index"
-              [style.animation-delay]="menuOpen() ? (i * 0.08) + 's' : '0s'">
-            <a href="{{ link.url }}" (click)="closeMenu()" class="nav-link">
-              <span class="link-icon">{{ link.icon }}</span>
-              <span>{{ link.label }}</span>
-            </a>
-          </li>
-          <li class="nav-cta-li">
-            <a href="#contact" (click)="closeMenu()" class="nav-cta">
-              Book Now
-            </a>
-          </li>
-        </ul>
+        <a href="#contact" class="nav-cta">
+          Book Now
+        </a>
       </div>
+    </nav>
+
+    <!-- Bottom tab bar with 5 tabs -->
+    <nav class="bottom-tabs">
+      <a *ngFor="let link of links"
+         href="{{ link.url }}"
+         class="tab-item"
+         [class.active]="activeTab() === link.label"
+         (click)="setActiveTab(link.label)">
+        <span class="tab-icon">{{ link.icon }}</span>
+        <span class="tab-label">{{ link.label }}</span>
+        <span class="tab-indicator" *ngIf="activeTab() === link.label"></span>
+      </a>
     </nav>
   `,
   styles: [`
@@ -57,7 +53,7 @@ import { CommonModule } from '@angular/common';
       right: 0;
       z-index: 1000;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      padding: var(--sp-2) 0;
+      padding: 10px 0;
       background: transparent;
     }
 
@@ -65,7 +61,7 @@ import { CommonModule } from '@angular/common';
       background: var(--n-50);
       border-bottom: 3px solid var(--ink);
       box-shadow: 0 4px 0 rgba(26, 26, 46, 0.08);
-      padding: var(--sp-1) 0;
+      padding: 6px 0;
     }
 
     .nav-container {
@@ -80,7 +76,7 @@ import { CommonModule } from '@angular/common';
     .logo {
       display: flex;
       align-items: center;
-      gap: var(--sp-1);
+      gap: 8px;
       text-decoration: none;
       transition: transform 0.3s var(--ease-bounce);
     }
@@ -90,73 +86,18 @@ import { CommonModule } from '@angular/common';
     }
 
     .logo-icon {
-      font-size: 28px;
+      font-size: 26px;
       animation: wobble 2s ease-in-out infinite;
     }
 
     .logo-text {
-      font-size: 28px;
+      font-size: 26px;
       color: var(--ink);
       letter-spacing: 2px;
     }
 
     .logo-accent {
       color: var(--c-accent-500);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      list-style: none;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      color: var(--ink);
-      font-weight: 600;
-      font-size: 15px;
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      transition: all 0.3s var(--ease-bounce);
-      position: relative;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 14px;
-      right: 14px;
-      height: 3px;
-      background: var(--c-accent-500);
-      border-radius: 2px;
-      transform: scaleX(0);
-      transition: transform 0.3s var(--ease-bounce);
-    }
-
-    .nav-link:hover {
-      background: var(--c-primary-100);
-      border-color: var(--ink);
-      transform: translateY(-2px);
-      box-shadow: 3px 3px 0 var(--ink);
-    }
-
-    .nav-link:hover::after {
-      transform: scaleX(1);
-    }
-
-    .link-icon {
-      font-size: 18px;
-      transition: transform 0.3s var(--ease-bounce);
-    }
-
-    .nav-link:hover .link-icon {
-      transform: scale(1.2) rotate(10deg);
     }
 
     .nav-cta {
@@ -199,92 +140,136 @@ import { CommonModule } from '@angular/common';
       box-shadow: 1px 1px 0 var(--ink);
     }
 
-    .hamburger {
-      display: none;
+    /* ===== Bottom tab bar ===== */
+    .bottom-tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: stretch;
+      align-items: stretch;
+      gap: 0;
+      background: var(--n-50);
+      border-top: 3px solid var(--ink);
+      box-shadow: 0 -4px 12px rgba(26, 26, 46, 0.12);
+      padding: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 0;
+      overflow: hidden;
+      height: 64px;
+    }
+
+    .tab-item {
+      flex: 1;
+      display: flex;
       flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .hamburger span {
-      width: 28px;
-      height: 3px;
-      background: var(--ink);
-      border-radius: 2px;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px 4px;
+      text-decoration: none;
+      color: var(--ink-light);
+      font-weight: 600;
+      font-size: 11px;
       transition: all 0.3s var(--ease-bounce);
+      position: relative;
+      border-right: 1px solid var(--n-200);
+      min-height: 56px;
     }
 
-    .hamburger span.open:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
-    }
-    .hamburger span.open:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger span.open:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
+    .tab-item:last-child {
+      border-right: none;
     }
 
-    @media (max-width: 900px) {
-      .hamburger { display: flex; }
+    .tab-item:hover {
+      background: var(--c-primary-50);
+      color: var(--ink);
+    }
 
-      .nav-links {
-        position: fixed;
-        top: 64px;
-        right: 0;
-        width: 280px;
-        flex-direction: column;
-        background: var(--n-50);
-        border: 3px solid var(--ink);
-        border-radius: 0 0 0 20px;
-        box-shadow: -6px 6px 0 var(--ink);
-        padding: var(--sp-3) var(--sp-2);
-        gap: var(--sp-1);
-        transform: translateX(100%);
-        opacity: 0;
-        pointer-events: none;
-        transition: all 0.4s var(--ease-bounce);
+    .tab-item.active {
+      color: var(--c-accent-600);
+      background: var(--c-accent-50);
+    }
+
+    .tab-icon {
+      font-size: 22px;
+      transition: transform 0.3s var(--ease-bounce);
+      line-height: 1;
+    }
+
+    .tab-item:hover .tab-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .tab-item.active .tab-icon {
+      transform: scale(1.15);
+    }
+
+    .tab-label {
+      letter-spacing: 0.5px;
+    }
+
+    .tab-indicator {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 4px;
+      background: var(--c-accent-500);
+      border-radius: 0 0 4px 4px;
+      animation: slideInUp 0.3s var(--ease-bounce);
+    }
+
+    @media (min-width: 501px) {
+      .bottom-tabs {
+        border-radius: 20px 20px 0 0;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .tab-item {
+        padding: 6px 2px;
+        font-size: 10px;
+        min-height: 52px;
       }
 
-      .nav-links.open {
-        transform: translateX(0);
-        opacity: 1;
-        pointer-events: auto;
+      .tab-icon {
+        font-size: 20px;
       }
 
-      .nav-links li {
-        width: 100%;
-        opacity: 0;
-        animation: slideInRight 0.4s var(--ease-bounce) forwards;
+      .tab-label {
+        font-size: 9px;
+        letter-spacing: 0;
       }
 
-      .nav-links.open li {
-        animation: slideInRight 0.4s var(--ease-bounce) forwards;
+      .logo-text {
+        font-size: 22px;
       }
 
-      .nav-link {
-        width: 100%;
-        justify-content: flex-start;
-        padding: 12px 16px;
-      }
-
-      .nav-cta-li {
-        margin-top: var(--sp-1);
+      .logo-icon {
+        font-size: 22px;
       }
 
       .nav-cta {
-        display: block;
-        text-align: center;
+        padding: 8px 18px;
+        font-size: 14px;
+      }
+
+      .bottom-tabs {
+        height: 60px;
       }
     }
   `],
 })
 export class NavbarComponent {
   scrolled = signal(false);
-  menuOpen = signal(false);
   scrollProgress = signal(0);
+  activeTab = signal('Home');
 
   links = [
     { label: 'Home', url: '#hero', icon: '🏠' },
@@ -300,13 +285,23 @@ export class NavbarComponent {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     this.scrolled.set(scrollTop > 60);
     this.scrollProgress.set(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+
+    // Auto-detect active tab based on scroll position
+    const sections = ['hero', 'services', 'gallery', 'about', 'testimonials'];
+    const labels = ['Home', 'Services', 'Gallery', 'About', 'Reviews'];
+    for (let i = 0; i < sections.length; i++) {
+      const el = document.getElementById(sections[i]);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 120 && rect.bottom > 120) {
+          this.activeTab.set(labels[i]);
+          break;
+        }
+      }
+    }
   }
 
-  toggleMenu(): void {
-    this.menuOpen.update((v) => !v);
-  }
-
-  closeMenu(): void {
-    this.menuOpen.set(false);
+  setActiveTab(label: string): void {
+    this.activeTab.set(label);
   }
 }

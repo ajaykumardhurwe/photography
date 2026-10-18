@@ -118,7 +118,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 64px;
 }
 
 body {
@@ -138,6 +138,20 @@ body {
 
 .section-pad {
   padding: var(--sp-10) 0;
+}
+
+.section-pad-bottom {
+  padding-bottom: 90px;
+}
+
+@media (max-width: 500px) {
+  .section-pad {
+    padding: var(--sp-6) 0;
+  }
+
+  .container {
+    padding: 0 12px;
+  }
 }
 
 .display-font {

@@ -158,6 +158,7 @@ import { SERVICE_LEVELS, PRICING_ROWS } from '../data';
       background: linear-gradient(135deg, var(--c-primary-100) 0%, var(--c-accent-100) 100%);
       position: relative;
       overflow: hidden;
+      padding-bottom: 80px !important;
     }
 
     .contact-bg-shapes {

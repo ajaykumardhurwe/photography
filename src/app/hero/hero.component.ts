@@ -108,7 +108,8 @@ import { RevealDirective } from '../reveal.directive';
       display: flex;
       align-items: center;
       overflow: hidden;
-      padding-top: 80px;
+      padding-top: 64px;
+      padding-bottom: 72px;
     }
 
     .hero-bg {

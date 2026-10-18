@@ -52,8 +52,8 @@ import { FooterComponent } from './app/footer/footer.component';
 
     .back-to-top {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 76px;
+      right: 20px;
       width: 52px;
       height: 52px;
       background: var(--c-accent-500);

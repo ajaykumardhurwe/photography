@@ -73,7 +73,7 @@ import { CommonModule } from '@angular/common';
     .footer {
       background: var(--ink);
       color: var(--n-200);
-      padding: var(--sp-8) 0 var(--sp-4);
+      padding: var(--sp-8) 0 80px;
       position: relative;
       overflow: hidden;
     }

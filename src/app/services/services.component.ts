@@ -467,10 +467,9 @@ import { PRICING_ROWS, SERVICE_LEVELS, type ServiceLevel } from '../data';
     }
 
     .pricing-table thead .col-tier {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      text-align: center;
       border-right: 2px solid var(--n-600);
+      white-space: nowrap;
     }
 
     .pricing-table thead .col-tier:last-child {
@@ -482,11 +481,14 @@ import { PRICING_ROWS, SERVICE_LEVELS, type ServiceLevel } from '../data';
     }
 
     .tier-dot {
-      font-size: 16px;
+      font-size: 14px;
+      vertical-align: middle;
+      margin-right: 4px;
     }
 
     .tier-name {
       letter-spacing: 1px;
+      vertical-align: middle;
     }
 
     .star-badge {
@@ -519,10 +521,13 @@ import { PRICING_ROWS, SERVICE_LEVELS, type ServiceLevel } from '../data';
       font-size: 14px;
       color: var(--ink);
       border-bottom: 1px solid var(--n-200);
+      text-align: center;
+      white-space: nowrap;
     }
 
     .pricing-table tbody .col-service {
       font-weight: 700;
+      text-align: left;
     }
 
     .pricing-table tbody .col-standard {
@@ -648,6 +653,14 @@ import { PRICING_ROWS, SERVICE_LEVELS, type ServiceLevel } from '../data';
 
       .pricing-cards-mobile {
         display: block;
+      }
+
+      .section-header {
+        margin-bottom: var(--sp-3);
+      }
+
+      .pricing-section {
+        margin-top: var(--sp-5);
       }
     }
   `],
