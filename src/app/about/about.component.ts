@@ -18,7 +18,7 @@ interface Skill {
         <div class="about-grid">
           <div class="about-visual" appReveal="reveal-left">
             <div class="photo-frame comics-border-thick">
-              <img src="https://images.pexels.com/photos/16922040/pexels-photo-16922040.jpeg?auto=compress&cs=tinysrgb&h=650&w=500"
+              <img src="https://raw.githubusercontent.com/ajaykumardhurwe/Assets/refs/heads/main/photography.png"
                    alt="Photographer with camera" />
               <div class="photo-shine"></div>
             </div>

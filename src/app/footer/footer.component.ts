@@ -49,8 +49,8 @@ import { CommonModule } from '@angular/common';
           <div class="footer-col">
             <h4 class="footer-heading">Get in Touch</h4>
             <ul class="footer-links">
-              <li>📧 hello&#64;snapstar.photo</li>
-              <li>📱 (555) 123-4567</li>
+              <li>📧 ajay.dhurwe0926@gmail.com</li>
+              <li>📱 9301084259</li>
               <li>📍 Downtown Arts District</li>
               <li>⏰ Mon–Sat: 9am–7pm</li>
             </ul>
@@ -58,7 +58,7 @@ import { CommonModule } from '@angular/common';
         </div>
 
         <div class="footer-bottom">
-          <p>© 2026 SnapStar Photography. All rights reserved.</p>
+          <p>© 2026 Ajay Photography. All rights reserved.</p>
           <p class="made-with">Made with 💛 and a camera</p>
         </div>
       </div>

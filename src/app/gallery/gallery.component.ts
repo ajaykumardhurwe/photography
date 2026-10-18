@@ -26,11 +26,11 @@ import { GALLERY_ITEMS, GALLERY_CATEGORIES, type GalleryItem } from '../data';
             <span class="ig-avatar-emoji">📸</span>
           </div>
           <div class="ig-profile-info">
-            <span class="ig-handle">@snapstar.photo</span>
+            <span class="ig-handle">@iajaydhurwe</span>
             <div class="ig-stats">
-              <span><strong>12</strong> posts</span>
-              <span><strong>4.8K</strong> followers</span>
-              <span><strong>320</strong> following</span>
+              <span><strong>13</strong> posts</span>
+              <span><strong>140</strong> followers</span>
+              <span><strong>1</strong> following</span>
             </div>
           </div>
           <a href="#contact" class="ig-follow-btn">
@@ -142,7 +142,7 @@ import { GALLERY_ITEMS, GALLERY_CATEGORIES, type GalleryItem } from '../data';
             <div class="lightbox-info-top">
               <div class="lightbox-avatar">📸</div>
               <div class="lightbox-author">
-                <span class="lightbox-handle">@snapstar.photo</span>
+                <span class="lightbox-handle">@iajaydhurwe</span>
                 <span class="lightbox-cat" [style.background]="getCategoryColor(item.category)">{{ item.category }}</span>
               </div>
             </div>

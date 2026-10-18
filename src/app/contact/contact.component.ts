@@ -30,14 +30,14 @@ import { SERVICE_LEVELS, PRICING_ROWS } from '../data';
                 <div class="method-icon" style="background: var(--c-accent-400);">📧</div>
                 <div class="method-info">
                   <span class="method-label">Email</span>
-                  <span class="method-value">hello&#64;snapstar.photo</span>
+                  <span class="method-value">ajay.dhurwe0926@gmail.com</span>
                 </div>
               </div>
               <div class="contact-method">
                 <div class="method-icon" style="background: var(--c-secondary-400);">📱</div>
                 <div class="method-info">
                   <span class="method-label">Phone</span>
-                  <span class="method-value">(555) 123-4567</span>
+                  <span class="method-value">9301084259</span>
                 </div>
               </div>
               <div class="contact-method">

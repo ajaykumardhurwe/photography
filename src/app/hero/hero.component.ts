@@ -70,7 +70,7 @@ import { RevealDirective } from '../reveal.directive';
         <div class="hero-visual" appReveal="reveal-right">
           <div class="photo-stack">
             <div class="photo-card photo-main comics-border-thick">
-              <img src="https://images.pexels.com/photos/16029834/pexels-photo-16029834.jpeg?auto=compress&cs=tinysrgb&h=650&w=500"
+              <img src="https://raw.githubusercontent.com/ajaykumardhurwe/Assets/refs/heads/main/photography.png"
                    alt="Photographer in studio" />
               <div class="photo-tag">PRO STUDIO</div>
               <div class="photo-shine"></div>
