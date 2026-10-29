@@ -485,11 +485,18 @@ import { SERVICE_LEVELS, PRICING_ROWS } from '../data';
     }
   `],
 })
+
 export class ContactComponent {
   serviceLevels = SERVICE_LEVELS;
   pricingRows = PRICING_ROWS;
+
   submitting = signal(false);
   submitted = signal(false);
+  errorMessage = signal('');
+
+  // Replace this with your deployed Apps Script URL.
+  private readonly SCRIPT_URL =
+    'https://script.google.com/macros/s/AKfycbxdSasilEL0_TBCiG9fNMH_MVmQgyqWBP-P3slFnpPw3j0GOCV8oPvGRSWPa0TREU3B/exec';
 
   formData = {
     name: '',
@@ -497,23 +504,62 @@ export class ContactComponent {
     phone: '',
     service: '',
     date: '',
-    message: '',
+    message: ''
   };
 
-  submitForm(): void {
+  async submitForm(): Promise<void> {
+    if (this.submitting()) {
+      return;
+    }
+
     this.submitting.set(true);
-    setTimeout(() => {
-      this.submitting.set(false);
+    this.submitted.set(false);
+    this.errorMessage.set('');
+
+    try {
+      const payload = {
+        name: this.formData.name.trim(),
+        email: this.formData.email.trim(),
+        phone: this.formData.phone.trim(),
+        service: this.formData.service,
+        date: this.formData.date,
+        message: this.formData.message.trim()
+      };
+
+      // text/plain avoids a JSON content-type preflight request.
+      // no-cors means the browser cannot read the server response.
+      await fetch(this.SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // This confirms the browser dispatched the request,
+      // not that Google Sheets definitely saved the row.
       this.submitted.set(true);
+
       this.formData = {
         name: '',
         email: '',
         phone: '',
         service: '',
         date: '',
-        message: '',
+        message: ''
       };
+
       setTimeout(() => this.submitted.set(false), 5000);
-    }, 1200);
+
+    } catch (error) {
+      console.error('Booking request error:', error);
+      this.errorMessage.set(
+        'Unable to send your request. Please try again.'
+      );
+    } finally {
+      this.submitting.set(false);
+    }
   }
 }
+

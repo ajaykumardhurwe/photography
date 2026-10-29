@@ -23,7 +23,9 @@
     "@angular/build": "21.1.0",
     "@angular/cli": "21.1.0",
     "@angular/compiler-cli": "21.1.0",
+    "@types/jasmine": "^7.0.0",
     "angular-cli-ghpages": "^3.1.2",
+    "jasmine-core": "^7.0.2",
     "typescript": "^5.9.3"
   }
 }
